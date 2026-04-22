@@ -26,7 +26,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/messages/**").permitAll()
                         .requestMatchers("/api/payments/**").permitAll()
                         .requestMatchers("/api/admin/**").permitAll()
+                        .requestMatchers("/api/reviews/all").permitAll()
                         .requestMatchers("/api/reviews/**").permitAll()
+                        .requestMatchers("/api/reports/**").permitAll()
+                        .requestMatchers("/api/notifications/**").permitAll()
+                        .requestMatchers("/api/tours/**").permitAll()
                         .anyRequest().permitAll()
                 );
 

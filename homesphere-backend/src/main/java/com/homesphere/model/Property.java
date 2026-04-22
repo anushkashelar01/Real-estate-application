@@ -11,17 +11,27 @@ public class Property {
     private Long id;
 
     private String title;
-
     private String city;
-
     private double price;
-
     private String image;
+
+    // 🔥 NEW FIELDS (FR10 + 360°)
+    private String description;
+    private String address;
+    private String contactNumber;
+    private String propertyType;
+    private Integer bedrooms;
+    private Double area;
+
+    // 🌐 360 VIEW IMAGE
+    private String panoramaImage;
+
+    // ================= CONSTRUCTORS =================
 
     // ✅ Default Constructor
     public Property() {}
 
-    // ✅ Parameterized Constructor
+    // ✅ Existing Constructor (unchanged)
     public Property(String title, String city, double price, String image) {
         this.title = title;
         this.city = city;
@@ -29,7 +39,26 @@ public class Property {
         this.image = image;
     }
 
-    // ✅ Getters & Setters
+    // 🔥 FULL CONSTRUCTOR (NEW)
+    public Property(String title, String city, double price, String image,
+                    String description, String address, String contactNumber,
+                    String propertyType, int bedrooms, double area, String panoramaImage) {
+
+        this.title = title;
+        this.city = city;
+        this.price = price;
+        this.image = image;
+        this.description = description;
+        this.address = address;
+        this.contactNumber = contactNumber;
+        this.propertyType = propertyType;
+        this.bedrooms = bedrooms;
+        this.area = area;
+        this.panoramaImage = panoramaImage;
+    }
+
+    // ================= GETTERS & SETTERS =================
+
     public Long getId() {
         return id;
     }
@@ -66,7 +95,66 @@ public class Property {
         this.image = image;
     }
 
-    // ✅ Optional (DEBUGGING)
+    // 🔥 NEW GETTERS & SETTERS
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public String getPropertyType() {
+        return propertyType;
+    }
+
+    public void setPropertyType(String propertyType) {
+        this.propertyType = propertyType;
+    }
+
+    public int getBedrooms() {
+        return bedrooms;
+    }
+
+    public void setBedrooms(int bedrooms) {
+        this.bedrooms = bedrooms;
+    }
+
+    public double getArea() {
+        return area;
+    }
+
+    public void setArea(double area) {
+        this.area = area;
+    }
+
+    public String getPanoramaImage() {
+        return panoramaImage;
+    }
+
+    public void setPanoramaImage(String panoramaImage) {
+        this.panoramaImage = panoramaImage;
+    }
+
+    // ================= DEBUG =================
+
     @Override
     public String toString() {
         return "Property{" +
@@ -75,6 +163,13 @@ public class Property {
                 ", city='" + city + '\'' +
                 ", price=" + price +
                 ", image='" + image + '\'' +
+                ", description='" + description + '\'' +
+                ", address='" + address + '\'' +
+                ", contactNumber='" + contactNumber + '\'' +
+                ", propertyType='" + propertyType + '\'' +
+                ", bedrooms=" + bedrooms +
+                ", area=" + area +
+                ", panoramaImage='" + panoramaImage + '\'' +
                 '}';
     }
 }

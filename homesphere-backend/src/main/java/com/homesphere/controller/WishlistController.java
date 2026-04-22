@@ -1,37 +1,51 @@
 package com.homesphere.controller;
 
 import com.homesphere.model.Wishlist;
-import com.homesphere.service.WishlistService;
+import com.homesphere.repository.WishlistRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/wishlist")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class WishlistController {
 
-    private final WishlistService service;
+    @Autowired
+    private WishlistRepository wishlistRepository;
 
-    public WishlistController(WishlistService service) {
-        this.service = service;
-    }
-
-    // ADD
+    // ✅ ADD TO WISHLIST
     @PostMapping
-    public Wishlist add(@RequestParam Long userId, @RequestParam Long propertyId) {
-        return service.add(userId, propertyId);
+    public Wishlist addWishlist(@RequestBody Wishlist wishlist) {
+
+        // 🔥 Prevent duplicate
+        boolean exists = wishlistRepository
+                .existsByUserIdAndPropertyId(
+                        wishlist.getUserId(),
+                        wishlist.getPropertyId()
+                );
+
+        if (!exists) {
+            return wishlistRepository.save(wishlist);
+        }
+
+        return wishlist; // already exists
     }
 
-    // REMOVE
-    @DeleteMapping
-    public void remove(@RequestParam Long userId, @RequestParam Long propertyId) {
-        service.remove(userId, propertyId);
-    }
-
-    // GET
+    // ✅ GET USER WISHLIST
     @GetMapping("/{userId}")
-    public List<Wishlist> get(@PathVariable Long userId) {
-        return service.getUserWishlist(userId);
+    public List<Wishlist> getWishlist(@PathVariable Long userId) {
+        return wishlistRepository.findByUserId(userId);
+    }
+
+    // ✅ REMOVE FROM WISHLIST
+    @DeleteMapping("/{userId}/{propertyId}")
+    public String removeWishlist(
+            @PathVariable Long userId,
+            @PathVariable Long propertyId
+    ) {
+        wishlistRepository.deleteByUserIdAndPropertyId(userId, propertyId);
+        return "Removed from wishlist";
     }
 }

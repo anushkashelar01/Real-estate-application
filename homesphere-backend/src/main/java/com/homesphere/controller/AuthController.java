@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin(origins = "*")   // ✅ FIX: Allow all frontend ports
+@CrossOrigin(origins = "*")
 public class AuthController {
 
     @Autowired
@@ -21,22 +21,40 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    // REGISTER
+    // ================= REGISTER =================
     @PostMapping("/register")
     public UserDto registerUser(@RequestBody User user) {
+
+        // 🔥 FORCE DEFAULT ROLE
+        user.setRole("USER");
+
         return userService.registerUser(user);
     }
 
-    // LOGIN (JWT)
+    // ================= LOGIN =================
     @PostMapping("/login")
     public AuthResponse loginUser(@RequestBody LoginRequest request) {
 
-        // validate user
-        userService.loginUser(request.getEmail(), request.getPassword());
+        // ✅ GET USER FROM DB
+        UserDto user = userService.loginUser(
+                request.getEmail(),
+                request.getPassword()
+        );
 
-        // generate token
-        String token = jwtUtil.generateToken(request.getEmail());
+        // ❌ if invalid
+        if (user == null) {
+            throw new RuntimeException("Invalid email or password");
+        }
 
-        return new AuthResponse(token);
+        // ✅ GENERATE TOKEN
+        String token = jwtUtil.generateToken(user.getEmail());
+
+        // ✅ RETURN FULL DATA (IMPORTANT)
+        return new AuthResponse(
+                token,
+                user.getId(),
+                user.getEmail(),
+                user.getRole()
+        );
     }
 }

@@ -15,19 +15,25 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
-    // ✅ Add Review
+    // ================= ✅ ADD REVIEW =================
     @PostMapping
     public Review addReview(@RequestBody Review review) {
         return reviewService.addReview(review);
     }
 
-    // ✅ Get Reviews by Property
+    // ================= ✅ GET REVIEWS BY PROPERTY =================
     @GetMapping("/{propertyId}")
     public List<Review> getReviews(@PathVariable Long propertyId) {
         return reviewService.getReviewsByProperty(propertyId);
     }
 
-    // ✅ Delete Review (Admin)
+    // ================= 👑 ADMIN: GET ALL REVIEWS =================
+    @GetMapping("/all")
+    public List<Review> getAllReviews() {
+        return reviewService.getAllReviews();
+    }
+
+    // ================= ❌ DELETE REVIEW =================
     @DeleteMapping("/{id}")
     public String deleteReview(@PathVariable Long id) {
         reviewService.deleteReview(id);
